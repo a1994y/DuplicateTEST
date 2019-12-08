@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@drawable/menu"
+    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    tools:context=".OneActivity">
+
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:text="Выбрать книгу"
+            android:layout_gravity="center"
+            android:paddingLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/buttonadd"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:paddingRight="10dp"
+            android:text="Выгрузить слова"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:id="@+id/outputTXT"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+
+
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Заполнить поля"
+        tools:layout_editor_absoluteX="309dp"
+        tools:layout_editor_absoluteY="73dp" />
+
+
+    <!--<TextView
+        android:id="@+id/txtShow"
+        android:layout_width="221dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Get, Get, Set, Set"
+        tools:layout_editor_absoluteX="241dp"
+        tools:layout_editor_absoluteY="204dp" />-->
+
+   <!-- <com.google.android.gms.ads.AdView
+        android:id="@+id/adView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/banner_ad_unit_id">
+    </com.google.android.gms.ads.AdView>-->
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/testText"
+        android:text=""
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="24dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="560dp"
+        android:orientation="vertical">
+
+        <com.google.android.gms.ads.AdView
+
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/adView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="6"
+            android:layout_gravity="center"
+            ads:adSize="BANNER"
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
+
+        </com.google.android.gms.ads.AdView>
+
+        <ListView
+
+            android:id="@+id/items1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:paddingLeft="20dp"
+            android:paddingTop="10dp"
+            android:paddingRight="20dp"
+            android:layout_weight="1"
+            android:paddingBottom="10dp"
+            tools:listitem="@layout/item" />
+
+
+    </LinearLayout>
+
+
+
+   <!-- app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    -->
+
+    <TextView
+        android:id="@+id/txtShow"
+        android:layout_width="221dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:text="Get, Get, Set, Set"
+        tools:layout_editor_absoluteX="241dp"
+        tools:layout_editor_absoluteY="204dp" />
+
+
+
+
+</LinearLayout>
