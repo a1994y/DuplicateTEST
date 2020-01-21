@@ -5,6 +5,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.app.TabActivity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.TabHost;
 
@@ -25,6 +26,7 @@ public class MainActivity extends TabActivity {
 
         TabHost tabHost = getTabHost();
         TabHost.TabSpec tabSpec;
+
 
         tabSpec = tabHost.newTabSpec("tag1");
         tabSpec.setIndicator("Частые слова");

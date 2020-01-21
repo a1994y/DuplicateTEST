@@ -1,6 +1,7 @@
 package com.example.dublicate;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
 
@@ -15,7 +16,9 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
+import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -26,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,18 +38,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -54,13 +57,18 @@ public class OneActivity extends AppCompatActivity {
 
     private AdView mAdView;
 
-    Button buttonadd, button, outputTXT;
+    Button buttonadd, button, outputTXT, info;
     DatabaseHelper dbHelper;
-    TextView txtShow, textTest;
+    TextView txtShow, textTest, test;
+    ProgressBar progressBar, pb;
     Parcelable state;
     ListView lvOne;
     int progress = 0;
     private static final int FILE_SELECT_CODE = 0;
+
+
+
+
 
 
     public static int PICK_FILE = 1;
@@ -83,14 +91,18 @@ public class OneActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one);
         buttonadd = findViewById(R.id.buttonadd);
+        //progressBar = findViewById(R.id.progressbar);
         button = findViewById(R.id.button);
         outputTXT = findViewById(R.id.outputTXT);
+        info = findViewById(R.id.info);
         txtShow = findViewById(R.id.txtShow);
         textTest = findViewById(R.id.testText);
+        test = findViewById(R.id.test);
         lvOne = findViewById(R.id.items1);
         lvOne.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        final ItemsAdapter adapter = new ItemsAdapter();
-        lvOne.setAdapter(adapter);
+       /* final ItemsAdapter adapter = new ItemsAdapter();
+        lvOne.setAdapter(adapter);*/
+
 
 
         mAdView = findViewById(R.id.adView);
@@ -142,93 +154,75 @@ public class OneActivity extends AppCompatActivity {
         }
 
 
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View view) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(OneActivity.this);
+                builder.setTitle("Путь к файлу")
+                        .setMessage("Файл со словами находится по пути - Внутреняя память - /Android/Data/com.example.duplicate/")
+                        .setCancelable(false)
+                        .setNegativeButton("Ок",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alert = builder.create();
+                alert.show();
+
+            }
+        });
+
         outputTXT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View view) {
 
 
 
-                SQLiteDatabase db9 = dbHelper.getReadableDatabase();
-                int numRows = (int) DatabaseUtils.queryNumEntries(db9, "words");
-                String[] array1 = new String[numRows];
-                int i = 0;
-                db9.rawQuery("SELECT * FROM " + "words" + " ORDER BY " + "count", null);
-                Cursor c = db9.query(DatabaseHelper.TABLE, null, null, null, null, null, "count desc");
-                if (c.moveToFirst()) {
+                SQLiteDatabase db3 = dbHelper.getReadableDatabase();
+                db3.rawQuery("SELECT * FROM " + "words" + " ORDER BY "+ "count", null);
+                Cursor c2 = db3.query(DatabaseHelper.TABLE, null, null, null, null, null,"count desc" );
+                if (c2.moveToFirst()) {
 
-                    // определяем номера столбцов по имени в выборке
-                    int idColIndex = c.getColumnIndex("id");
-                    int wordColIndex = c.getColumnIndex("word");
-                    int countColIndex = c.getColumnIndex("count");
+
+                    int idColIndex = c2.getColumnIndex("id");
+                    int wordColIndex = c2.getColumnIndex("word");
+                    int countColIndex = c2.getColumnIndex("count");
 
                     do {
                         String empty = "";
-                        if (c.getString(wordColIndex).equals(empty)) {
+                        if(c2.getString(wordColIndex).equals(empty)){
 
-                            array1[i] = c.getString(wordColIndex) + ", ";
-                            i++;
+                        }
+                        else if(c2.getInt(countColIndex) > 5) {
+
+
+                            test.append(c2.getString(wordColIndex) + " ");
 
                         }
 
-                    } while (c.moveToNext());
-
+                    } while (c2.moveToNext());
                 } else
-                    c.close();
 
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/Duplicate/word.txt";
-                String txt = array1.toString();
-                /*byte[] toWrite = txt.getBytes();
-                try {
-                    FileOutputStream fos = new FileOutputStream(filePath);
-                    fos.write(toWrite);
-                    fos.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-*/
+                    c2.close();
 
-                try {
-                    /*
-                     * Создается объект файла, при этом путь к файлу находиться методом класcа Environment
-                     * Обращение идёт, как и было сказано выше к внешнему накопителю
-                     */
-                    File myFile = new File(Environment.getExternalStorageDirectory().toString() + "/" + "word.txt");
-                    myFile.createNewFile();                                         // Создается файл, если он не был создан
-                    FileOutputStream outputStream = new FileOutputStream(myFile);   // После чего создаем поток для записи
-                    outputStream.write(txt.getBytes());                            // и производим непосредственно запись
-                    outputStream.close();
-                    /*
-                     * Вызов сообщения Toast не относится к теме.
-                     * Просто для удобства визуального контроля исполнения метода в приложении
-                     */
-                } catch (Exception e) {
-                    e.printStackTrace();
+                String newtext = test.getText().toString();
+
+                File externalAppDir = new File(Environment.getExternalStorageDirectory() + "/Android/data/" + getPackageName());
+                if (!externalAppDir.exists()) {
+                    externalAppDir.mkdir();
                 }
 
-
-
-
-                /*File file = new File("/storage/emulated/0/Download/", "word.txt");
-
+                File file = new File(externalAppDir , "Word.txt");
                 try {
-                    *//*FileOutputStream fos=new FileOutputStream("/storage/emulated/0/Download/word.txt");*//*
                     file.createNewFile();
-                    FileWriter writer = new FileWriter(file);
-
-                        String text = array1.toString();
-                        byte[] buffer = text.getBytes();
-                        writer.write(text);
-                        writer.flush();
-                        writer.close();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                    FileOutputStream outputStream = new FileOutputStream(file);   // После чего создаем поток для записи
+                    outputStream.write(newtext.getBytes());                            // и производим непосредственно запись
+                    outputStream.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-*/
 
             }
         });
@@ -241,9 +235,9 @@ public class OneActivity extends AppCompatActivity {
                 intent.setType("*/*");
                 startActivityForResult(intent, PICK_FILE);
 
-                adapter.clear();
+                /*adapter.clear();
                 adapter.notifyDataSetChanged();
-
+*/
 
                 final SQLiteDatabase db5 = dbHelper.getWritableDatabase();
                 db5.delete("words", null, null);
@@ -276,102 +270,9 @@ public class OneActivity extends AppCompatActivity {
 
 
 
-                adapter.clear();
-                adapter.notifyDataSetChanged();
+                SqlWrite mt = new SqlWrite();
+                mt.execute();
 
-                final SQLiteDatabase db7 = dbHelper.getWritableDatabase();
-                db7.delete("words", null, null);
-
-                SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-
-                final String myTxt = txtShow.getText().toString();
-
-
-                String s = myTxt.toLowerCase();
-                String stopWords[] = {"is", "in", "of", "on", "to", "into", "are", "and", "at", "with", "a", "the", "for", "their", "from", "as",
-                        "but", "i", "s", "there", "so", "an", "over", "when", "by", "or", "under", "if", "than", "same", "well", "those",
-                        "off", "how", "these", "it", "them", "not", " *"};
-                for (int i = 0; i < stopWords.length; i++) {
-                    if (s.contains(stopWords[i])) {
-                        s = s.replaceAll(stopWords[i] + "\\s+", "");
-                    }
-                }
-
-
-                String text = deDup(s).toLowerCase();
-                final String[] keys = text.split(" ");
-                final String[] uniqueKeys;
-                int count = 0;
-                uniqueKeys = getUniqueKeys(keys);
-
-
-                int i = 0;
-
-                String sql = "INSERT INTO " + DatabaseHelper.TABLE + " VALUES(?,?,?);";
-                SQLiteStatement sqLiteStatement = db.compileStatement(sql);
-                db.beginTransaction();
-                try {
-
-
-                    for (String key : uniqueKeys) {
-
-                        if (null == key) {
-                            break;
-                        }
-
-
-                        for (String sTxt : keys) {
-
-                            if (key.equals(sTxt)) {
-                                count++;
-                            }
-                        }
-
-                        sqLiteStatement.clearBindings();
-                        sqLiteStatement.bindNull(1);
-                        sqLiteStatement.bindString(2, key);
-                        sqLiteStatement.bindLong(3, count);
-                        sqLiteStatement.execute();
-
-                        String empty = "";
-
-
-                        count = 0;
-
-                    }
-                    db.setTransactionSuccessful();
-                } finally {
-                    db.endTransaction();
-                }
-
-                    SQLiteDatabase db2 = dbHelper.getReadableDatabase();
-                    int numRows = (int) DatabaseUtils.queryNumEntries(db2, "words");
-                    db2.rawQuery("SELECT * FROM " + "words" + " ORDER BY " + "count", null);
-                    Cursor c = db2.query(DatabaseHelper.TABLE, null, null, null, null, null, "count desc");
-                    if (c.moveToFirst()) {
-
-                        // определяем номера столбцов по имени в выборке
-                        int idColIndex = c.getColumnIndex("id");
-                        int wordColIndex = c.getColumnIndex("word");
-                        int countColIndex = c.getColumnIndex("count");
-
-                        do {
-                            String empty = "";
-                            if (c.getString(wordColIndex).equals(empty)) {
-
-                            } else if (c.getInt(countColIndex) > 5) {
-                                adapter.add(new Item(c.getString(wordColIndex), c.getInt(countColIndex)));
-                            }
-
-                        } while (c.moveToNext());
-                    } else
-
-                        c.close();
-
-                    adapter.notifyDataSetChanged();
-                    db2.close();
-                  //  progressBar.setVisibility(View.GONE);
 
                 }
 
@@ -391,7 +292,7 @@ public class OneActivity extends AppCompatActivity {
                 final String[] array1 = new String[numRows];
                 if (c2.moveToFirst()) {
 
-                    // определяем номера столбцов по имени в выборке
+
                     int idColIndex = c2.getColumnIndex("id");
                     int wordColIndex = c2.getColumnIndex("word");
                     int countColIndex = c2.getColumnIndex("count");
@@ -404,8 +305,7 @@ public class OneActivity extends AppCompatActivity {
                         else if(c2.getInt(countColIndex) > 5) {
                             array1[i] = c2.getString(wordColIndex);
                             i++;
-                            // переход на следующую строку
-                            // а если следующей нет (текущая - последняя), то false - выходим из цикла
+
                         }
 
                     } while (c2.moveToNext());
@@ -492,6 +392,157 @@ public class OneActivity extends AppCompatActivity {
 
 
 
+    class SqlWrite extends AsyncTask<Void, Integer, Void> {
+
+
+        String myTxt = txtShow.getText().toString();
+
+
+        protected void onPreExecute(){
+
+
+            progressBar = findViewById(R.id.progressbar);
+            progressBar.setVisibility(View.VISIBLE);
+            pb = findViewById(R.id.pb);
+
+        }
+
+
+        @Override
+        protected Void doInBackground (Void... voids) {
+
+
+            final SQLiteDatabase db7 = dbHelper.getWritableDatabase();
+            db7.delete("words", null, null);
+
+            SQLiteDatabase db = dbHelper.getWritableDatabase();
+            String s = myTxt.toLowerCase();
+            String stopWords[] = {"is", "in", "of", "on", "to", "into", "are", "and", "at", "with", "a", "the", "for", "their", "from", "as",
+                    "but", "i", "s", "there", "so", "an", "over", "when", "by", "or", "under", "if", "than", "same", "well", "those",
+                    "off", "how", "these", "it", "them", "not", " *"};
+            for (int i = 0; i < stopWords.length; i++) {
+                if (s.contains(stopWords[i])) {
+                    s = s.replaceAll(stopWords[i] + "\\s+", "");
+                }
+            }
+
+
+            String text = deDup(s).toLowerCase();
+            final String[] keys = text.split(" ");
+            final String[] uniqueKeys;
+            int count = 0;
+            uniqueKeys = getUniqueKeys(keys);
+
+
+            int i = 0;
+
+            String sql = "INSERT INTO " + DatabaseHelper.TABLE + " VALUES(?,?,?);";
+            SQLiteStatement sqLiteStatement = db.compileStatement(sql);
+            db.beginTransaction();
+            try {
+
+
+                for (String key : uniqueKeys) {
+
+                    if (null == key) {
+                        break;
+                    }
+
+
+                    for (String sTxt : keys) {
+
+                        if (key.equals(sTxt)) {
+                            count++;
+                        }
+                    }
+
+                    sqLiteStatement.clearBindings();
+                    sqLiteStatement.bindNull(1);
+                    sqLiteStatement.bindString(2, key);
+                    sqLiteStatement.bindLong(3, count);
+                    sqLiteStatement.execute();
+                    publishProgress(++i);
+                    String empty = "";
+
+
+                    count = 0;
+
+                }
+                db.setTransactionSuccessful();
+            } finally {
+                db.endTransaction();
+            }
+
+
+            return null;
+        }
+
+
+
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+            pb.setProgress(values[0]);
+        }
+
+
+        protected void onPostExecute(Void list){
+
+            ItemsAdapter adapter = new ItemsAdapter();
+            lvOne.setAdapter(adapter);
+            pb = findViewById(R.id.pb);
+            int cou = 0;
+
+
+
+            adapter.clear();
+            adapter.notifyDataSetChanged();
+
+
+
+            SQLiteDatabase db2 = dbHelper.getReadableDatabase();
+            int numRows = (int) DatabaseUtils.queryNumEntries(db2, "words");
+            /*pb.setMax(numRows);*/
+            db2.rawQuery("SELECT * FROM " + "words" + " ORDER BY " + "count", null);
+            Cursor c = db2.query(DatabaseHelper.TABLE, null, null, null, null, null, "count desc");
+            if (c.moveToFirst()) {
+
+
+                int idColIndex = c.getColumnIndex("id");
+                int wordColIndex = c.getColumnIndex("word");
+                int countColIndex = c.getColumnIndex("count");
+
+                do {
+
+                    String empty = "";
+                    if (c.getString(wordColIndex).equals(empty)) {
+
+                    } else if (c.getInt(countColIndex) > 5) {
+                        adapter.add(new Item(c.getString(wordColIndex), c.getInt(countColIndex)));
+
+                    }
+
+                } while (c.moveToNext());
+            } else
+
+                c.close();
+
+            adapter.notifyDataSetChanged();
+            db2.close();
+
+            progressBar = findViewById(R.id.progressbar);
+            progressBar.setVisibility(View.GONE);
+
+
+        }
+
+
+
+    }
+
+
+
+
+
 
 
 
@@ -558,14 +609,6 @@ public class OneActivity extends AppCompatActivity {
 
             }
 
-
-
-                //txtShow.setText(fileContentXml.replaceAll("[^a-zA-Z ]", " "));
-
-
-
-                  /*  String fileContent = readXmlFile(uri);
-                    txtShow.setText(fileContent);*/
 
 
 

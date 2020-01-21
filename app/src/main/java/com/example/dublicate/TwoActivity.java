@@ -119,9 +119,7 @@ public class TwoActivity extends AppCompatActivity {
                     do {
                         if(c.getInt(countColIndex) <= 5) {
                             adapter2.add(new Item(c.getString(wordColIndex), c.getInt(countColIndex)));
-                           // array3[i] = c.getString(wordColIndex);
-                            // переход на следующую строку
-                            // а если следующей нет (текущая - последняя), то false - выходим из цикла
+
                         }
                     } while (c.moveToNext());
                 } else
@@ -146,7 +144,7 @@ public class TwoActivity extends AppCompatActivity {
                 final String[] array3 = new String[numRows];
                 if (c2.moveToFirst()) {
 
-                    // определяем номера столбцов по имени в выборке
+
                     int idColIndex = c2.getColumnIndex("id");
                     int wordColIndex = c2.getColumnIndex("word");
                     int countColIndex = c2.getColumnIndex("count");
@@ -159,8 +157,6 @@ public class TwoActivity extends AppCompatActivity {
                         else if(c2.getInt(countColIndex) <= 5) {
                             array3[i] = c2.getString(wordColIndex);
                             i++;
-                            // переход на следующую строку
-                            // а если следующей нет (текущая - последняя), то false - выходим из цикла
                         }
 
                     } while (c2.moveToNext());
