@@ -10,12 +10,12 @@
     tools:context=".OneActivity">
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:id="@+id/LinLayy"
-        android:layout_width="389dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:orientation="horizontal"
+        android:gravity="center"
         android:paddingTop="20dp"
         android:paddingBottom="20dp">
 
@@ -23,60 +23,35 @@
             android:id="@+id/buttonadd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:background="@drawable/button_click"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="Выбрать книгу"
-            tools:ignore="MissingConstraints" />
+            android:text="@string/SelectBook" />
+
+        <TextView
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
 
         <Button
             android:id="@+id/outputTXT"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="150dp"
-            android:layout_marginLeft="150dp"
-            android:layout_marginBottom="20dp"
             android:background="@drawable/button_click"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="Выгрузить слова"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
+            android:text="@string/OutputWord" />
+
+        <TextView
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
 
         <Button
             android:id="@+id/info"
-            android:layout_width="51dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="340dp"
-            android:layout_marginLeft="340dp"
-            android:layout_marginEnd="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_marginBottom="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/button_click"
-            android:text="Инфо"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:ignore="MissingConstraints" />
+            android:text="@string/info" />
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
-
-
-
-    <LinearLayout
-        android:id="@+id/LinLay"
-        android:layout_width="389dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:paddingLeft="100dp"
-        android:orientation="horizontal"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
 
         <Button
             android:id="@+id/button"
@@ -84,52 +59,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/button_click"
-            android:paddingLeft="10dp"
-            android:paddingRight="20dp"
-            android:text="Заполнить поля"
-            tools:layout_editor_absoluteX="95dp"
-            tools:layout_editor_absoluteY="16dp"
-            tools:ignore="MissingConstraints" />
+            android:text="@string/FillInTheField"
+           />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:id="@+id/progressbar"
-            android:theme="@style/CircularProgress"
-            android:visibility="invisible"
-            android:layout_gravity="center"
-            android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="277dp"
-            tools:layout_editor_absoluteY="16dp"
-            tools:ignore="MissingConstraints" />
-
- </LinearLayout>
-
-    <!--<TextView
-        android:id="@+id/txtShow"
-        android:layout_width="221dp"
-        android:layout_height="44dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:text="Get, Get, Set, Set"
-        tools:layout_editor_absoluteX="241dp"
-        tools:layout_editor_absoluteY="204dp" />-->
-
-   <!-- <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id">
-    </com.google.android.gms.ads.AdView>-->
-
-
-    <ProgressBar
-        android:id="@+id/pb"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -148,18 +80,6 @@
         android:layout_height="560dp"
         android:orientation="vertical">
 
-        <com.google.android.gms.ads.AdView
-
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="6"
-            android:layout_gravity="center"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-3940256099942544/6300978111">
-
-        </com.google.android.gms.ads.AdView>
 
         <ListView
 

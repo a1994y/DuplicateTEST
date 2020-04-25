@@ -22,9 +22,9 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         begin = findViewById(R.id.begin);
 
-        mAdView = findViewById(R.id.adView);
+        /*mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().addTestDevice(AdRequest.DEVICE_ID_EMULATOR).build();
-        mAdView.loadAd(adRequest);
+        mAdView.loadAd(adRequest);*/
 
         begin.setOnClickListener(new View.OnClickListener() {
             @Override

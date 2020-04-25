@@ -53,6 +53,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 
+//Version 2.1
+
 public class OneActivity extends AppCompatActivity {
 
     private AdView mAdView;
@@ -60,10 +62,8 @@ public class OneActivity extends AppCompatActivity {
     Button buttonadd, button, outputTXT, info;
     DatabaseHelper dbHelper;
     TextView txtShow, textTest, test;
-    ProgressBar progressBar, pb;
     Parcelable state;
     ListView lvOne;
-    int progress = 0;
     private static final int FILE_SELECT_CODE = 0;
 
 
@@ -90,13 +90,14 @@ public class OneActivity extends AppCompatActivity {
     protected void onCreate (Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_one);
+
         buttonadd = findViewById(R.id.buttonadd);
         //progressBar = findViewById(R.id.progressbar);
         button = findViewById(R.id.button);
+        textTest = findViewById(R.id.testText);
         outputTXT = findViewById(R.id.outputTXT);
         info = findViewById(R.id.info);
         txtShow = findViewById(R.id.txtShow);
-        textTest = findViewById(R.id.testText);
         test = findViewById(R.id.test);
         lvOne = findViewById(R.id.items1);
         lvOne.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -105,7 +106,7 @@ public class OneActivity extends AppCompatActivity {
 
 
 
-        mAdView = findViewById(R.id.adView);
+        /*mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
@@ -142,7 +143,7 @@ public class OneActivity extends AppCompatActivity {
                 // to the app after tapping on an ad.
             }
         });
-
+*/
 
         dbHelper = new DatabaseHelper(this);
         lvOne.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -400,11 +401,6 @@ public class OneActivity extends AppCompatActivity {
 
         protected void onPreExecute(){
 
-
-            progressBar = findViewById(R.id.progressbar);
-            progressBar.setVisibility(View.VISIBLE);
-            pb = findViewById(R.id.pb);
-
         }
 
 
@@ -481,7 +477,6 @@ public class OneActivity extends AppCompatActivity {
 
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-            pb.setProgress(values[0]);
         }
 
 
@@ -489,7 +484,6 @@ public class OneActivity extends AppCompatActivity {
 
             ItemsAdapter adapter = new ItemsAdapter();
             lvOne.setAdapter(adapter);
-            pb = findViewById(R.id.pb);
             int cou = 0;
 
 
@@ -529,8 +523,6 @@ public class OneActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
             db2.close();
 
-            progressBar = findViewById(R.id.progressbar);
-            progressBar.setVisibility(View.GONE);
 
 
         }
@@ -538,12 +530,6 @@ public class OneActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
-
 
 
     private String readTextFile(Uri uri)

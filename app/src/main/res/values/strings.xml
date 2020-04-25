@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">Duplicate</string>
     <string name="banner_ad_unit_id">ca-app-pub-5990533632957831/1972697078</string>
+    <string name="SelectBook">Выбрать книгу</string>
+    <string name="OutputWord">Выгрузить слова</string>
+    <string name="info">Инфо</string>
+    <string name="FillInTheField">Заполнить поля</string>
+    <string name="get_get_set_set">Get, Get, Set, Set</string>
 </resources>
